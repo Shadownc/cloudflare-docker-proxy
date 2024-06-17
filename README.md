@@ -34,4 +34,35 @@
      "ghcr.libcuda.so": "https://ghcr.io",
    };
    ```
+## _worker.js(直接复制到cloudflare的Workers部署即可使用)
 
+## 如何使用？
+
+例如您的Workers项目域名为：`dockers.100769.xyz`；
+
+### 1.官方镜像路径前面加域名
+```shell
+docker pull dockers.100769.xyz/stilleshan/frpc:latest
+```
+```shell
+docker pull dockers.100769.xyz/library/nginx:stable-alpine3.19-perl
+```
+
+### 2.一键设置镜像加速
+修改文件 `/etc/docker/daemon.json`（如果不存在则创建）
+```shell
+sudo mkdir -p /etc/docker
+sudo tee /etc/docker/daemon.json <<-'EOF'
+{
+  "registry-mirrors": ["https://dockers.100769.xyz"]  # 请替换为您自己的Worker自定义域名
+}
+EOF
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+```
+
+## 变量说明
+| 变量名 | 示例 | 必填 | 备注 | 
+|--|--|--|--|
+| URL302 | https://blog.lmyself.top/ |❌| 主页302跳转 |
+| URL | https://www.baidu.com/ |❌| 主页伪装(设为`nginx`则伪装为nginx默认页面) |
